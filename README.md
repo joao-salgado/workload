@@ -7,6 +7,7 @@ almost everywhere.
 
 ##Featured technologies
 
+- Java
 - Spring Boot
 - Hibernate
 - JPA
