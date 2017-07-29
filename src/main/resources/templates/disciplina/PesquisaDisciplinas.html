@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}"
+		xmlns:workload="http://workload.desafio.com" 
+		xmlns:data="http://www.thymeleaf.org/extras/data" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Pesquisa de Disciplinas</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Pesquisa de disciplinas</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize="hasRole('ROLE_CADASTRAR_DISCIPLINA')">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/disciplinas/nova}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Nova disciplina</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">	
+		<form method="GET" th:object="${disciplinaFilter}">
+			<div class="row">
+			
+				<div class="col-sm-6 form-group">
+					<label for="nome" class="control-label">Nome</label>
+					<input id="nome" type="text" class="form-control" th:field="*{nome}" autofocus="autofocus"/>
+				</div>
+				
+				<div class="col-sm-3 form-group">
+					<label for="sigla" class="control-label">Sigla</label>
+					<input id="sigla" type="text" class="form-control" th:field="*{sigla}"/>
+				</div>
+				
+				<div class="col-sm-3 form-group">
+					<label for="creditos" class="control-label">Créditos</label>
+					<input id="creditos" type="text" class="form-control js-plain" th:field="*{creditos}"/>
+				</div>
+								
+			</div>
+	
+			<div class="row">
+				<div class="col-sm-6  form-group">
+					<label for="curso" class="control-label">Curso</label>
+					<select id="curso" class="form-control" th:field="*{curso}">
+						<option value="">Todos os cursos</option>
+						<option th:each="curso : ${cursos}" th:value="${curso.codigo}" th:text="${curso.nome}"></option>
+					</select>
+				</div>			
+				
+				<div class="col-sm-6  form-group">
+					<label class="control-label" for="dificuldade">Dificuldade</label>
+					<select id="dificuldade" class="form-control" th:field="*{dificuldade}">
+						<option value="">Todas as dificuldades</option>
+						<option th:each="dificuldade : ${dificuldades}" th:value="${dificuldade.codigo}" th:text="${dificuldade.nivel}"></option>
+					</select>
+				</div>
+			</div>
+			
+			<button class="btn  btn-primary" type="submit">Pesquisar</button>
+		</form>
+		
+		<div class="table-responsive wl-tabela-simples">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="table-disciplinas-col-sigla">
+							<workload:order page="${pagina}" field="sigla" text="Sigla"/>
+						</th>
+						<th class="table-disciplinas-col-nome">
+							<workload:order page="${pagina}" field="nome" text="Nome"/>
+						</th>
+						<th class="table-disciplinas-col-dificuldade">Dificuldade</th>
+						<th class="table-disciplinas-col-hora">Carga Horária</th>
+						<th class="table-disciplinas-col-creditos">Créditos</th>
+						<th class="table-disciplinas-col-curso">
+							<workload:order page="${pagina}" field="curso" text="Curso"/>
+						</th>
+						
+						<th class="table-col-acoes" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')"></th>
+						
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="disciplina : ${pagina.conteudo}">
+						<td class="text-center" th:text="${disciplina.sigla}">AL21H</td>
+						<td class="text-center" th:text="${disciplina.nome}">Algoritmos</td>
+						<td class="text-center" th:text="${disciplina.dificuldade.nivel}">Fácil</td>
+						<td class="text-center" th:text="|${disciplina.cargaHoraria} hrs|">80</td>
+						<td class="text-center" th:text="${disciplina.creditos}">80</td>
+						<td class="text-center" th:text="${disciplina.curso?.nome} ? ${disciplina.curso.nome} : 'Não informado'">Engenharia de Software</td>
+						<td class="text-center" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')">
+							<a class="btn btn-link btn-xs js-tooltip" title="Editar" 
+									th:href="@{/disciplinas/{codigo}(codigo=${disciplina.codigo})}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a class="btn btn-link btn-xs js-tooltip js-exclusao-btn" title="Excluir" 
+									href="#" 
+									data:url="@{/disciplinas/{codigo}(codigo=${disciplina.codigo})}"
+									data:objeto="${disciplina.nome}">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="7">Nenhum disciplina encontrada</td>
+					</tr>
+				</tbody>
+				
+			</table>
+		</div>
+		<workload:pagination page="${pagina}"/>
+	</div>
+</section>
+</body>
+</html>

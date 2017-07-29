@@ -1,0 +1,1 @@
+ALTER TABLE disciplina ADD sigla VARCHAR(6);

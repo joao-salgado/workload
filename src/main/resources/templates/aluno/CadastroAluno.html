@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}" 
+		xmlns:workload="http://workload.desafio.com">
+<body>
+
+<head>
+	<title>Cadastro de Aluno</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${aluno.novo}">Cadastro de Aluno</h1>
+					<h1 th:unless="${aluno.novo}" th:text="|Edição do aluno(a) ${aluno.nome}|">Editar João</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/alunos}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>		
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		
+		<form method="POST" th:object="${aluno}" class="form-vertical  js-form-loading" 
+				th:action="${aluno.novo} ? @{/alunos/novo} : @{/alunos/{codigo}(codigo=${aluno.codigo})}">
+			<workload:message/>			
+			
+			<input type="hidden" th:field="*{codigo}"/>
+			
+			<h2 class="wl-demarca">Info</h2>
+			
+			<div class="row">
+				<div class="col-sm-8 form-group  wl-required" workload:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label>
+					<input type="text" id="nome" class="form-control" th:field="*{nome}" autofocus="autofocus"/>
+				</div>
+				<div class="col-sm-4 form-group wl-required" workload:classforerror="ra">
+					<label for="ra" class="control-label">Registro Acadêmico</label>
+					<input type="number" min="1" id="ra" class="form-control" th:field="*{ra}"/>		
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="email" class="control-label">E-Mail</label>
+				<input type="text" id="email" th:field="*{email}" class="form-control"/>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-5  form-group wl-required" workload:classforerror="curso">
+					<label class="control-label" for="curso">Curso</label>
+						<select id="curso" class="form-control" th:field="*{curso}">
+							<option value="">Selecione o Curso</option>
+							<option th:each="curso : ${cursos}" th:value="${curso.codigo}" th:text="${curso.nome}"></option>
+						</select>
+				</div>
+			
+				<div class="col-lg-3 col-sm-6 form-group wl-required" workload:classforerror="genero">
+					<label for="genero" class="control-label">Gênero</label> 
+					<div>
+						<th:block th:each="genero : ${generos}">
+							<div class="radio  radio-inline">
+								<input th:id="|id_${genero}|" type="radio" th:value="${genero}" th:field="*{genero}" checked/> 
+								<label th:for="|id_${genero}|" th:text="${genero.descricao}">Masculino/Feminino</label>
+							</div>
+						</th:block>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+</section>
+</body>
+</html>

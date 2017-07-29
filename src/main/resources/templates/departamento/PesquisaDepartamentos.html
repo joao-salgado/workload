@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}"
+		xmlns:workload="http://workload.desafio.com" 
+		xmlns:data="http://www.thymeleaf.org/extras/data" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Pesquisa de departamentos</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Pesquisa de departamentos</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize="hasRole('ROLE_CADASTRAR_DEPARTAMENTO')">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/departamentos/novo}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Novo departamento</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">	
+		<form method="GET" th:object="${departamentoFilter}">
+			
+			<div class="form-group">
+				<label for="nome" class="control-label">Nome</label>
+				<input type="text" id="nome" class="form-control" th:field="*{nome}" autofocus="autofocus"/>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-3  form-group">
+					<label for="sigla" class="control-label">Sigla</label>
+					<input id="sigla" type="text" class="form-control" th:field="*{sigla}"/>
+				</div>
+				
+				<div class="col-sm-3  form-group">
+					<label for="bloco" class="control-label">Bloco</label>
+					<select id="bloco" class="form-control" th:field="*{bloco}">
+						<option value="">Todos os blocos</option>
+						<option th:each="bloco : ${blocos}" th:value="${bloco}" th:text="${bloco.descricao}"></option>
+					</select>
+				</div>
+			</div>
+			
+			<button class="btn  btn-primary" type="submit">Pesquisar</button>
+		</form>
+		
+		<div class="table-responsive wl-tabela-simples">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="table-departamentos-col-sigla">
+							<workload:order page="${pagina}" field="sigla" text="Sigla"/>	
+						</th>
+						<th class="table-departamentos-col-nome">
+							<workload:order page="${pagina}" field="nome" text="Nome"/>			
+						</th>
+						<th class="table-departamentos-col-bloco">
+							<workload:order page="${pagina}" field="bloco" text="Bloco"/>
+						</th>
+						
+						<th class="table-col-acoes" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')"></th>
+						
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="departamento : ${pagina.conteudo}">
+						<td class="text-center" th:text="${departamento.sigla}">DACOMP</td>
+						<td class="text-center" th:text="${departamento.nome}">Departamento de Computação</td>
+						<td class="text-center" th:text="${departamento.bloco.descricao}">A</td>
+						<td class="text-center" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')">
+							<a class="btn btn-link btn-xs js-tooltip" title="Editar" 
+									th:href="@{/departamentos/{codigo}(codigo=${departamento.codigo})}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a class="btn btn-link btn-xs js-tooltip  js-exclusao-btn" title="Excluir" 
+									href="#" 
+									data:url="@{/departamentos/{codigo}(codigo=${departamento.codigo})}"
+									data:objeto="${departamento.nome}">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="7">Nenhum departamento encontrado</td>
+					</tr>
+				</tbody>
+				
+			</table>
+		</div>
+		
+		<workload:pagination page="${pagina}"/>
+		
+	</div>
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

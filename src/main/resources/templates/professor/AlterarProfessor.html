@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}" 
+		xmlns:workload="http://workload.desafio.com">
+<body>
+
+<head>
+	<title>Editar Perfil</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>	
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Editar perfil</h1>
+				</div>
+			</div>		
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+	
+		<form method="POST" th:object="${usuario}" class="form-vertical  js-form-loading" 
+				th:action="@{/prof/novo}">
+			<workload:message/>
+			
+			<input type="hidden" th:field="*{codigo}"/>
+			<input type="hidden" th:field="*{grupos}"/>
+			<input type="hidden" th:field="*{professor}"/>
+			
+			<h2 class="wl-demarca">Info</h2>
+			
+			<div class="row">
+			
+				<div class="col-sm-4 form-group  wl-required" workload:classforerror="professor.siape">
+					<label class="control-label" for="siape">Siape</label>
+					<input type="text" id="siape" class="form-control js-plain" th:field="*{professor.siape}" autofocus="autofocus"/>
+				</div>
+				
+				<div class="col-sm-8 form-group  wl-required" workload:classforerror="nome">
+					<label class="control-label" for="nome">Nome</label>
+					<input type="text" id="nome" class="form-control" th:field="*{nome}"/>
+				</div>
+				
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-2 form-group">
+					<label class="control-label" for="dataNascimento">Data de nascimento</label>
+					<input type="text" id="dataNascimento" th:field="*{dataNascimento}" class="form-control  js-date" autocomplete="off"/>
+				</div>
+			
+				<div class="col-sm-5  form-group  wl-required" workload:classforerror="professor.departamento">
+					<label class="control-label" for="departamento">Departamento</label>
+					<select id="departamento" class="form-control" th:field="*{professor.departamento}">
+						<option value="">Selecione o departamento</option>
+						<option th:each="departamento : ${departamentos}" th:value="${departamento.codigo}" th:text="${departamento.nome}"></option>
+					</select>
+				</div>	
+				
+				<div class="col-sm-5  form-group  wl-required" workload:classforerror="professor.titulo">
+					<label class="control-label" for="titulo">Título</label>
+					<select id="titulo" class="form-control" th:field="*{professor.titulo}">
+						<option value="">Selecione o título</option>
+						<option th:each="titulo : ${titulos}" th:value="${titulo}" th:text="${titulo.descricao}"></option>
+					</select>
+				</div>
+				
+			</div>
+				
+			<div class="row">
+							
+				<div class="col-sm-6  form-group  wl-required" workload:classforerror="professor.regimeTrabalho">
+					<label class="control-label" for="regiTrabalho">Regime de trabalho</label>
+					<select id="regiTrabalho" class="form-control" th:field="*{professor.regimeTrabalho}">
+						<option value="">Selecione o regime</option>
+						<option th:each="regime : ${regimesTrabalho}" th:value="${regime.codigo}" th:text="${regime.descricao}"></option>
+					</select>
+				</div>	
+				
+				<div class="form-group  col-sm-3">
+					<label class="control-label" for="senha">Senha</label> 
+					<input type="password" class="form-control" id="senha" th:field="*{senha}"/>
+				</div>
+				
+				<div class="form-group  col-sm-3">
+					<label class="control-label" for="confirmacaoSenha">Confirmação de senha</label> 
+					<input type="password" class="form-control" id="confirmacaoSenha" th:field="*{confirmacaoSenha}"/>
+				</div>
+				
+			</div>
+			
+			<h2 class="wl-demarca">Contato</h2>
+			<div class="row">
+				<div class="col-sm-5 form-group  wl-required"  workload:classforerror="email">
+					<label class="control-label" for="email">E-Mail</label>
+					<input type="text" id="email" class="form-control" th:field="*{email}" placeholder="Será utilizado para o login"/>
+				</div>
+				
+				<div class="col-sm-3 form-group">
+					<label class="control-label" for="telefone">Telefone</label>
+					<input type="text" id="telefone" class="form-control js-phone-number" th:field="*{contato.telefone}"/>
+				</div>
+				
+				<div class="col-sm-2 form-group">
+					<label class="control-label" for="setor">Setor</label>
+					<input type="text" id="setor" class="form-control" th:field="*{contato.setor}"/>
+				</div>
+				
+				<div class="col-sm-2 form-group">
+					<label class="control-label" for="ramal">Ramal</label>
+					<input type="text" id="ramal" class="form-control js-plain" th:field="*{contato.ramal}"/>
+				</div>
+			</div>
+			
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+
+		</form>
+	</div>
+</section>
+<th:block layout:fragment="javascript-extra">
+
+</th:block>
+</body>
+</html>

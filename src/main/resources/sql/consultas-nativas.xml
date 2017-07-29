@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
+	version="2.1">
+	
+	<named-native-query name="Atividades.totalPorMesInicio" result-set-mapping="totalPorMesMapping">
+		<query>
+			SELECT DATE_FORMAT(inicio, '%Y/%m') mes
+				, COUNT(*) total
+			    FROM execucao
+			    WHERE inicio > DATE_SUB(NOW(), INTERVAL 6 MONTH)
+			    GROUP BY DATE_FORMAT(inicio, '%Y/%m')
+			    ORDER BY DATE_FORMAT(inicio, '%Y/%m') DESC
+	    </query>
+	</named-native-query>
+	
+	<named-native-query name="Atividades.totalPorMesTermino" result-set-mapping="totalPorMesMapping">
+		<query>
+			SELECT DATE_FORMAT(termino, '%Y/%m') mes
+				, COUNT(*) total
+			    FROM execucao
+			    WHERE termino > DATE_SUB(NOW(), INTERVAL 6 MONTH)
+			    AND termino IS NOT NULL
+			    GROUP BY DATE_FORMAT(termino, '%Y/%m')
+			    ORDER BY DATE_FORMAT(termino, '%Y/%m') DESC
+	    </query>
+	</named-native-query>
+	
+	<sql-result-set-mapping name="totalPorMesMapping">
+		<constructor-result target-class="com.desafio.workload.dto.AtividadePorMes">
+			<column name="mes" class="java.lang.String"/>
+			<column name="total" class="java.lang.Integer"/>
+		</constructor-result>
+	</sql-result-set-mapping>
+	
+</entity-mappings>

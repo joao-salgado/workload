@@ -1,0 +1,8 @@
+CREATE TABLE aluno (
+	codigo BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+	codigo_curso BIGINT(20) NOT NULL,
+	nome VARCHAR(99) NOT NULL,
+	genero VARCHAR(15) NOT NULL,
+	email VARCHAR(99),
+	FOREIGN KEY (codigo_curso) REFERENCES curso(codigo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

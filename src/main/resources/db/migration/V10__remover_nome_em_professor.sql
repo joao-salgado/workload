@@ -1,0 +1,1 @@
+ALTER TABLE professor DROP nome;

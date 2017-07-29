@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}"
+		xmlns:workload="http://workload.desafio.com" 
+		xmlns:data="http://www.thymeleaf.org/extras/data" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Minhas atividades</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Minhas atividades</h1>
+				</div>
+				
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/atividades}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Adicionar atividades</span>
+						</a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">	
+		<form method="GET" th:object="${execucaoFilter}">
+			<div class="row">
+				
+				<div class="col-sm-5  form-group">
+					<label for="area" class="control-label">Área</label>
+					<select id="area" class="form-control" th:field="*{area}">
+						<option value="">Todas as áreas</option>
+						<option th:each="area : ${areas}" th:value="${area.codigo}" th:text="${area.descricao}"></option>
+					</select>
+				</div>
+				
+				<div class="col-sm-5  form-group">
+					<label for="restricao" class="control-label">Restrição</label>
+					<select id="restricao" class="form-control" th:field="*{restricao}">
+						<option value="">Todas as áreas</option>
+						<option th:each="restricao : ${restricoes}" th:value="${restricao.codigo}" th:text="${restricao.descricao}"></option>
+					</select>
+				</div>
+				
+				<div class="col-sm-2  form-group">
+					<label for="pontuacao" class="control-label">Pontuação</label>
+					<input id="pontuacao" type="number" class="form-control" th:field="*{pontuacao}"/>
+				</div>
+				
+			</div>
+			
+			<div class="row">
+					<div class="form-group  col-sm-12">
+						<label for="descricao" class="control-label">Descrição</label>
+						<textarea class="form-control" id="descricao" rows="5" 
+								placeholder="Descreva algo sobre a atividade" th:field="*{descricao}"></textarea>
+					</div>
+			</div>
+			
+			<button class="btn  btn-primary" type="submit">Pesquisar</button>
+			
+		</form>
+		
+		<div class="aw-datatable-toolbar">
+			<button class="btn btn-default  btn-xs  js-status-btn  disabled" data:status="ATIVAR" data:url="@{/atividades/termino}">
+				<span>Encerrar atividade</span>
+			</button>
+			
+			<button class="btn btn-default  btn-xs  js-status-btn  disabled" data:status="DESATIVAR" data:url="@{/atividades/termino}">
+				<span>Retomar atividade</span>
+			</button>
+		</div>
+		
+		<div class="table-responsive wl-tabela-simples">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="table-usuarios-col-status">
+	            			<div class="checkbox  aw-checkbox-no-margin">
+	            				<input type="checkbox" class="js-selecao-todos"/>
+	            				<label></label>
+	            			</div>
+	            		</th>
+						<th class="table-atividades-col-area">Área da atividade</th>
+						<th class="table-atividades-col-restricao">Restrição</th>
+						<th class="table-atividades-col-descricao">Atividade</th>
+						<th class="table-atividades-col-area">Início</th>
+						<th class="table-atividades-col-area">Término</th>											
+						<th class="table-atividades-col-pontuacao">Pontuação</th>	
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="execucao : ${pagina.conteudo}">
+						<td>
+							<div class="checkbox  aw-checkbox-no-margin">
+	            				<input type="checkbox" class="js-selecao" data:codigo="${execucao.codigo}">
+	            				<label></label>
+	            			</div>
+						</td>
+						<td class="text-left" th:text="${execucao.atividade.area.descricao}"></td>
+						<td th:text="${execucao.atividade.restricao.descricao}"></td>
+						<td th:text="${execucao.atividade.descricao}"></td>
+						<td th:text="${{execucao.inicio}}"></td>
+						<td th:text="${execucao.termino} ? ${{execucao.termino}} : 'Não encerrada'"></td>
+						<td class="text-center" th:text="${execucao.atividade.pontuacao}"></td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="7">Nenhuma atividade encontrada</td>
+					</tr>
+				</tbody>
+				
+			</table>
+		</div>
+		
+		
+		<workload:pagination page="${pagina}"/>
+		
+	</div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/multiselecao.js}"></script>
+</th:block>
+
+</body>
+</html>

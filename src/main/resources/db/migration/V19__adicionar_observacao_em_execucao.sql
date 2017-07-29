@@ -1,0 +1,1 @@
+ALTER TABLE execucao ADD observacao VARCHAR(1000);

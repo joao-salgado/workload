@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}"
+		xmlns:workload="http://workload.desafio.com" 
+		xmlns:data="http://www.thymeleaf.org/extras/data" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Pesquisa de cursos</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Pesquisa de cursos</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize="hasRole('ROLE_CADASTRAR_CURSO')">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/cursos/novo}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Novo curso</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">	
+		<form method="GET" th:object="${cursoFilter}">
+		
+			<div class="form-group">
+				<label for="nome" class="control-label">Nome</label>
+				<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}"/>
+			</div>
+	
+			<div class="row">
+				<div class="col-sm-6  form-group">
+					<label for="departamento" class="control-label">Departamento</label>
+					<select id="departamento" class="form-control" th:field="*{departamento}">
+						<option value="">Todos os departamentos</option>
+						<option th:each="departamento : ${departamentos}" th:value="${departamento.codigo}" th:text="${departamento.nome}"></option>
+					</select>
+				</div>
+				
+				<div class="col-sm-6  form-group">
+					<label for="tipo" class="control-label">Tipo</label>
+					<select id="tipo" class="form-control" th:field="*{tipo}">
+						<option value="">Todos os tipos</option>
+						<option th:each="tipo : ${tipos}" th:value="${tipo.codigo}" th:text="${tipo.descricao}"></option>
+					</select>
+				</div>
+				
+			</div>
+			
+			<button class="btn  btn-primary" type="submit">Pesquisar</button>
+		</form>
+		
+		<div class="table-responsive wl-tabela-simples">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="table-cursos-col-nome">
+							<workload:order page="${pagina}" field="nome" text="Nome"/>
+						</th>
+						<th class="table-cursos-col-tipo">
+							<workload:order page="${pagina}" field="tipo" text="Tipo"/>
+						</th>
+						<th class="table-cursos-col-departamento">
+							<workload:order page="${pagina}" field="departamento" text="Departamento"/>
+						</th>
+						
+						<th class="table-col-acoes" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')"></th>
+						
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="curso : ${pagina.conteudo}">
+						<td class="text-left" th:text="${curso.nome}">Engenharia de Software</td>
+						<td class="text-left" th:text="${curso.tipo.descricao}">Bacharelado</td>
+						<td class="text-left" th:text="${curso.departamento?.nome} ? ${curso.departamento.nome} : 'Não informado'">Departamento de Computação</td>
+						<td class="text-center" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')">
+							<a class="btn btn-link btn-xs js-tooltip" title="Editar" 
+									th:href="@{/cursos/{codigo}(codigo=${curso.codigo})}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a class="btn btn-link btn-xs js-tooltip  js-exclusao-btn" title="Excluir" 
+									href="#" data:url="@{/cursos/{codigo}(codigo=${curso.codigo})}"
+									data:objeto="${curso.nome}">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="7">Nenhum curso encontrado</td>
+					</tr>	
+				</tbody>
+				
+			</table>
+		</div>
+		
+		<workload:pagination page="${pagina}"/>
+		
+	</div>
+</section>
+</body>
+</html>

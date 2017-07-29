@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:workload="http://workload.workload.com" 
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+
+<head>
+	<title>Cadastro de turma</title>
+	
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}"/>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${turma.nova}">Cadastro de turma</h1>
+					<h1 th:unless="${turma.nova}" th:text="|Edição da turma ${turma.sigla} - Disciplina: ${turma.disciplina.nome} - ${turma.periodo.ano}/${turma.periodo.semestre}|"></h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/turmas}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${turma}" class="form-vertical  js-form-loading" th:action="@{/turmas/nova}">
+			<workload:message/>
+			
+			<input type="hidden" id="uuid" th:field="*{uuid}"/>
+			<input type="hidden" th:field="*{codigo}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-4  wl-required" workload:classforerror="professor.codigo">
+					<label class="control-label" for="professor">Professor</label>
+					<div class="input-group">
+				      <input id="professor" type="text" readonly="readonly" class="form-control" th:field="*{professor.usuario.nome}"
+				     		 placeholder="Clique na lupa para pesquisar o professor"/>
+				      <input id="codigoProfessor" type="hidden" th:field="*{professorTemp}"/>
+				      	<span class="input-group-btn">
+				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada"
+				        			data-toggle="modal" data-target="#pesquisaRapidaProfessores">
+				        	<i class="glyphicon  glyphicon-search"></i>
+				        </button>
+				      </span>
+				    </div>				    
+				</div>
+				
+				<div class="form-group  col-sm-4  wl-required" workload:classforerror="disciplina.codigo">
+					<label class="control-label" for="disciplina">Disciplina</label>
+					<div class="input-group">
+				      <input id="disciplina" type="text" readonly="readonly" class="form-control" th:field="*{disciplina.nome}" 
+				      		placeholder="Clique na lupa para pesquisar a disciplina"/>
+				      <input id="codigoDisciplina" type="hidden" th:field="*{disciplina}"/>
+				      <span class="input-group-btn">
+				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada"
+				        			data-toggle="modal" data-target="#pesquisaRapidaDisciplinas">
+				        	<i class="glyphicon  glyphicon-search"></i>
+				        </button>
+				      </span>
+				    </div>				    
+				</div>
+				
+				<div class="form-group  col-sm-4 wl-required" workload:classforerror="sigla">
+					<label class="control-label" for="sigla">Sigla</label>
+					<input type="text" class="form-control" id="sigla" th:field="*{sigla}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-lg-12">
+					<ul class="nav nav-tabs  js-abas-venda">
+					  <li role="presentation" class="active"><a href="#alunos">Aluno</a></li>
+					  <li role="presentation"><a href="#periodos">Período</a></li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="tab-content">
+				<div class="tab-pane active" id="alunos">
+
+					<div class="row">
+						<div class="form-group  col-lg-12">
+							<input type="text" class="form-control  js-ra-aluno-input" id="cerveja" 
+								placeholder="Pesquise e adicione o aluno pelo R.A. ou pelo nome" autofocus="autofocus" 
+								data:url="@{/alunos}"/>
+						</div>
+					</div>
+					
+					<div class="wl-tabela-alunos  js-tabela-alunos-container">
+					
+						<th:block th:replace="turma/tabelaAlunosTurma"/>
+						
+					</div>
+				</div>
+				
+				<div class="tab-pane" id="periodos">
+					<div class="row">
+						<div class="form-group  col-sm-3 wl-required" workload:classforerror="periodo.ano">
+							<label class="control-label" for="dataEntrega">Ano</label>
+							<input type="text" maxlength="4" class="form-control js-plain" id="dataEntrega" 
+							th:field="*{periodo.ano}"/>
+						</div>
+						
+						<div class="form-group  col-sm-3 wl-required" workload:classforerror="periodo.semestre">
+							<label class="control-label" for="horarioEntrega">Semestre</label>
+							<input type="text" maxlength="1" min="1" max="2" class="form-control js-plain" id="horarioEntrega" 
+							th:field="*{periodo.semestre}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<button type="submit" class="btn  btn-primary">Salvar</button>
+			
+		</form>
+	</div>
+	<th:block th:replace="professor/PesquisaRapidaProfessores :: pesquisaRapidaProfessores"></th:block>
+	<th:block th:replace="disciplina/PesquisaRapidaDisciplinas :: pesquisaRapidaDisciplinas"></th:block>
+	<th:block th:replace="hbs/TemplateAutocompleteAluno"></th:block>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+
+	<script th:src="@{/javascripts/vendors/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/disciplina.pesquisa-rapida.js}"></script>
+	<script th:src="@{/javascripts/professor.pesquisa-rapida.js}"></script>
+	<script th:src="@{/javascripts/turma.autocomplete-alunos.js}"></script>	
+	<script th:src="@{/javascripts/turma.tabela-itens.js}"></script>	
+	<script th:src="@{/javascripts/turma.js}"></script>
+	  
+	<script>
+	$(function() {
+		$('.js-abas-venda a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+		});
+	});
+	</script>
+	
+</th:block>
+
+</html>	

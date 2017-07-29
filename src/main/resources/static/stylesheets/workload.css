@@ -1,0 +1,417 @@
+
+/*
+########################
+# UTILIDADES
+########################
+*/
+
+.wl-glyphicon-large {
+	font-size: 18px;
+}
+
+.wl-dir {
+	margin-left: 124px;
+}
+
+.wl-required > .control-label:after {
+	content: " *";
+	color: red;
+}
+
+/*
+########################
+# COMPONENTES
+########################
+*/
+
+/* Field Action */
+.wl-field-action {
+	display: flex;
+}
+
+.wl-field-action__icon {
+	margin: 6px 0 0 5px;
+}
+
+/*
+########################
+#FORMATA«√O
+########################
+*/
+
+.wl-demarca{
+	font-size: 13pt;
+	color: black;
+	background-color: #C0C0C0;
+	padding: 5px 0px 5px 10px;
+	margin: 10px 0px 10px 0px;
+}
+
+/*Tabela Simples*/
+
+.wl-tabela-simples {
+	margin-top: 15px;
+}
+
+.wl-tabela-simples table tr th {
+	border-bottom-width: 1px;
+}
+
+.wl-tabela-simples table tr td {
+	border-top: none;
+	border-bottom: 1px solid #e7eaec;
+	padding: 10px;
+	vertical-align: middle;
+}
+
+/*
+#####################
+#P¡GINAS DO SISTEMA
+#####################
+*/
+
+/*Colunas - Comum*/
+
+.table-col-acoes {
+	width: 80px;
+}
+
+/* Colunas - Pesquisa de Departamentos */
+
+.table-departamentos-col-sigla {
+	width: 200px;
+	text-align: center;
+}
+
+.table-departamentos-col-nome {
+	width: 700px;
+	text-align: center;
+}
+
+.table-departamentos-col-bloco {
+	min-width: 100px;
+	text-align: center;
+}
+
+/* Colunas - Pesquisa de Alunos */
+
+.table-alunos-col-ra {
+	width: 200px;
+	text-align: left;
+}
+
+.table-alunos-col-nome {
+	width: 300px
+}
+
+.table-alunos-col-curso {
+	width: 300px;
+}
+
+.table-alunos-col-email {
+	width: 300px;
+}
+
+.table-alunos-col-genero {
+	min-width: 100px;
+}
+
+/* Colunas - Pesquisa de Disciplinas */
+
+.table-disciplinas-col-sigla {
+	width: 150px;
+	text-align: center;
+}
+
+.table-disciplinas-col-nome {
+	width: 300px;
+	text-align: center;
+}
+
+.table-disciplinas-col-hora {
+	width: 150px;
+	text-align: center;
+}
+
+.table-disciplinas-col-creditos {
+	width: 150px;
+	text-align: center;
+}
+
+.table-disciplinas-col-dificuldade {
+	min-width: 200px;
+	text-align: center;
+}
+
+.table-disciplinas-col-curso {
+	min-width: 300px;
+	text-align: center;
+}
+
+
+/* Colunas - Pesquisa de Tipos */
+
+.table-tipos-col-codigo {
+	width: 100px;
+	text-align: center;
+}
+
+.table-tipos-col-descricao {
+	min-width: 300px;
+	text-align: center;
+}
+
+/* Colunas - Pesquisa de Cursos */
+
+.table-cursos-col-nome {
+	width: 450px;
+	text-align: left;
+}
+
+.table-cursos-col-tipo {
+	width: 400px;
+	text-align: left;
+}
+
+.table-cursos-col-departamento {
+	min-width: 350px;
+	text-align: left;
+}
+
+
+/*Colunas - Pesquisa de usu·rios*/
+
+.table-usuarios-col-status {
+	width: 30px;
+	text-align: center;
+}
+
+/* Colunas - Pesquisa de Turmas */
+
+.table-turma-col-sigla {
+	width: 250px;
+	text-align: left;
+}
+
+.table-turma-col-disciplina {
+	width: 300px;
+	text-align: left;
+}
+
+.table-turma-col-alunos {
+	width: 200px;
+	text-align: left;
+}
+
+.table-turma-col-ano {
+	min-width: 200px;
+	text-align: left;
+}
+
+.table-turma-col-semestre {
+	min-width: 300px;
+	text-align: left;
+}
+
+/* Colunas - Pesquisa de Atividades */
+
+.table-atividades-col-area {
+	width: 	150px;
+	text-align: left;
+}
+
+.table-atividades-col-restricao {
+	width: 200px;
+	text-align: left;
+}
+
+.table-atividades-col-descricao {
+	min-width: 700px;
+	text-align: left;
+}
+
+.table-atividades-col-pontuacao {
+	min-width: 50px;
+	text-align: center;
+}
+
+/* Tabela Alunos p·gina de Turma */
+.wl-tabela-alunos {
+	margin-bottom: 15px;
+}
+
+.wl-tabela-alunos__vazio {
+	padding: 15px 15px;
+	
+	border: 1px dashed #ddd;
+	
+	text-align: center;
+	font-size: 1.2em;
+	font-weight: 300;
+	color: #555;
+}
+
+
+/*
+##############################
+# CUSTOMIZA«√O DE COMPONENTES
+##############################
+*/
+
+.checkbox input[type="checkbox"]:checked + input + label::after {
+	font-family: 'FontAwesome';
+	content: "\f00c";
+}
+
+/* Easy Autocomplete */
+.easy-autocomplete input {
+	border-radius: 2px !important;
+}
+
+.easy-autocomplete-container ul li {
+	font-size: 1em !important;
+	padding: 0px 5px !important;
+}
+
+/* Box */
+.negativo .aw-box__value {
+	color: red;
+}
+
+/* Tabela Item */
+.bw-tabela-item {
+	position: relative; /* Para que o painel de exclus√£o apare√ßa dentro da linha */
+	
+	padding: 15px 0;
+	
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.bw-tabela-item:after {
+	clear: both;
+	display: block;
+    content: "";
+}
+
+.bw-tabela-item ~ .bw-tabela-item {
+	border-top: 1px solid #ddd;
+}
+
+.bw-tabela-item__coluna {
+	padding: 0 10px;
+}
+
+.bw-tabela-item__coluna--foto {
+	float: left;
+	width: 60px;
+	
+	text-align: center;
+}
+
+.bw-tabela-item__coluna--valores {
+	padding-right: 0px;
+}
+
+.bw-tabela-item__coluna--detalhes, .bw-tabela-item__coluna--valores {
+	margin-left: 60px;
+}
+
+.bw-tabela-cerveja-nome {
+	font-weight: 500;
+	font-size: 1.1em;
+	display: block;
+}
+
+.bw-tabela-cerveja-origem {
+	color: #aaa;
+	display: block;
+	font-weight: 200;
+}
+
+.bw-tabela-cerveja-campo-quantidade {
+	width: 30px;
+	text-align: right;
+}
+
+.bw-tabela-cerveja-valor-pequeno {
+	font-weight: 300;
+	font-size: 1em;
+}
+
+.bw-tabela-cerveja-valor-medio {
+	font-weight: 300;
+	font-size: 1.3em;
+}
+
+.bw-tabela-cerveja-valor-grande {
+	font-weight: 300;
+	font-size: 1.6em;
+}
+
+.bw-tabela-item__painel-exclusao {
+    position: absolute;
+    top: 0;
+    right: 100000px;
+	height: 100%;
+    width: 50%;
+    
+    text-align: center;
+    padding-top: 35px;
+    
+	background-color: #80ccff;
+	
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
+.solicitando-exclusao .bw-tabela-item__painel-exclusao {
+	right: 0;
+	opacity: 1;
+}
+
+.bw-tabela-item__titulo-exclusao {
+    display: block;
+    margin-bottom: 5px;
+    
+	color: #fff;
+    font-size: 1.3em;
+}
+
+@media (min-width: 768px) { /* screen-sm-min */
+	.bw-tabela-item__painel-exclusao {
+		width: 40%;
+		padding-top: 10px;
+	}
+	
+	.bw-tabela-item__coluna {
+		float: left;
+		margin-left: 0px;
+	}
+	
+	.bw-tabela-item__coluna--detalhes {
+		width: calc(70% - 30px);
+	}
+	
+	.bw-tabela-item__coluna--valores {
+		width: calc(30% - 30px);
+
+		text-align: right;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

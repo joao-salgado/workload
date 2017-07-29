@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}"
+		xmlns:workload="http://workload.desafio.com" 
+		xmlns:data="http://www.thymeleaf.org/extras/data" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Adicionar atividade</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Adicionar Atividade</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/atividades}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>		
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		
+		<form method="POST" th:object="${execucao}" class="form-vertical  js-form-loading" th:action="@{/atividades/adicionar}">
+			<workload:message/>			
+						
+			<h2 class="wl-demarca">Info</h2>
+			
+			<div class="row">
+				
+				<div class="col-sm-5 form-group  wl-required">
+					<label class="control-label" for="area">Área da atividade</label>					
+				      <input id="area" type="text" readonly="readonly" class="form-control" th:field="*{atividade.area.descricao}"/>				   			    
+				</div>
+				
+				<div class="col-sm-5  form-group  wl-required">
+					<label class="control-label" for="restricao">Restrição</label>					
+				      <input id="restricao" type="text" readonly="readonly" class="form-control" th:field="*{atividade.restricao.descricao}"/>				    
+				</div>
+				
+				<div class="col-sm-2  form-group  wl-required">
+					<label for="pontuacao" class="control-label">Pontuação</label>
+					<input id="pontuacao" type="number" readonly="readonly" class="form-control" th:field="*{atividade.pontuacao}"/>		
+				</div>
+				
+			</div>
+			
+			<div class="row">
+					<div class="form-group  col-sm-12  wl-required">
+						<label for="descricao" class="control-label">Descrição</label>
+						<textarea class="form-control" readonly="readonly" id="descricao" rows="5" th:field="*{atividade.descricao}"></textarea>
+					</div>
+			</div>
+			
+			<div class="row">
+					<div class="form-group  col-sm-12">
+						<label for="ob" class="control-label">Observação</label>
+						<textarea class="form-control" id="ob" rows="5" 
+								th:field="*{observacao}"></textarea>
+					</div>
+			</div>
+			
+			<div class="row">
+				
+				<div class="col-sm-2 form-group  wl-required" workload:classforerror="inicio">
+					<label class="control-label" for="inicio">Início da atividade</label>
+					<input type="text" id="inicio" th:field="*{inicio}" class="form-control  js-date" autocomplete="off"/>
+				</div>
+				
+				<div class="col-sm-2 form-group" workload:classforerror="termino">
+					<label class="control-label" for="termino">Término da atividade</label>
+					<input type="text" id="termino" th:field="*{termino}" class="form-control  js-date" autocomplete="off"/>
+				</div>
+				
+			</div>
+			
+			<input type="hidden" th:field="*{atividade}" />
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+</section>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}"
+		xmlns:workload="http://workload.desafio.com">
+<head>
+	<title>Cadastro de departamento</title>
+</head>
+
+<body>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${departamento.novo}">Cadastro de departamento</h1>
+					<h1 th:unless="${departamento.novo}" th:text="|Edição de departamento - ${departamento.nome}|">Editar departamento</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/departamentos}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+	
+		<form method="POST" th:object="${departamento}" class="form-vertical  js-form-loading" 
+				th:action="${departamento.novo} ? @{/departamentos/novo} : @{/departamentos/{codigo}(codigo=${departamento.codigo})}">
+			<workload:message/>
+			
+			<input type="hidden" th:field="*{codigo}"/>
+			
+			<h2 class="wl-demarca">Info</h2>
+			
+			<div class="form-group wl-required" workload:classforerror="nome">
+				<label for="nome" class="control-label">Nome</label>
+				<input type="text" id="nome" class="form-control" th:field="*{nome}"/>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-3  form-group wl-required" workload:classforerror="sigla">
+					<label for="sigla" class="control-label">Sigla</label>
+					<input id="sigla" type="text" class="form-control" th:field="*{sigla}" autofocus="autofocus"/>
+				</div>
+				
+				<div class="col-sm-1  form-group wl-required" workload:classforerror="bloco">
+					<label for="bloco" class="control-label">Bloco</label>
+					<select id="bloco" class="form-control" th:field="*{bloco}">
+						<option value="">...</option>
+						<option th:each="bloco : ${blocos}" th:value="${bloco}" th:text="${bloco.descricao}"></option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+</section>
+
+</body>
+</html>

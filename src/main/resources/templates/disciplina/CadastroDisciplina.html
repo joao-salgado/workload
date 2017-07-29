@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}" 
+		xmlns:workload="http://workload.desafio.com">
+<body>
+
+<head>
+	<title>Cadastro de Disciplina</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${disciplina.novo}">Cadastro de disciplina</h1>
+					<h1 th:unless="${disciplina.novo}" th:text="|Edição da disciplina ${disciplina.nome}|">Editar disciplina</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/disciplinas}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+	
+		<form method="POST" th:object="${disciplina}" class="form-vertical  js-form-loading" 
+				th:action="${disciplina.novo} ? @{/disciplinas/nova} : @{/disciplinas/{codigo}(codigo=${disciplina.codigo})}">
+				
+			<workload:message/>
+			
+			<input type="hidden" th:field="*{codigo}"/>
+			
+			<h2 class="wl-demarca">Info</h2>
+			
+			<div class="row">
+				<div class="col-sm-9 form-group wl-required" workload:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label>
+					<input type="text" id="nome" class="form-control" th:field="*{nome}" autofocus="autofocus"/>
+				</div>
+				
+				<div class="col-sm-3 form-group wl-required"  workload:classforerror="sigla">
+					<label for="sigla" class="control-label">Sigla</label>
+					<input type="text" id="sigla" class="form-control" th:field="*{sigla}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				
+				<div class="col-sm-3  form-group  wl-required" workload:classforerror="curso">
+					<label class="control-label" for="curso">Curso</label>
+					<select id="curso" class="form-control" th:field="*{curso}">
+						<option value="">Selecione o Curso</option>
+						<option th:each="curso : ${cursos}" th:value="${curso.codigo}" th:text="${curso.nome}"></option>
+					</select>
+				</div>
+				
+				<div class="col-sm-3 form-group wl-required"  workload:classforerror="cargaHoraria">
+					<label for="cargaHoraria" class="control-label">Carga Horária</label>
+					<input type="text" id="cargaHoraria" class="form-control js-plain" th:field="*{cargaHoraria}"/>
+				</div>
+				
+				<div class="col-sm-3  form-group wl-required" workload:classforerror="dificuldade">
+					<label class="control-label" for="dificuldade">Dificuldade</label>
+					<select id="dificuldade" class="form-control" th:field="*{dificuldade}">
+						<option value="">Selecione a Dificuldade</option>
+						<option th:each="dificuldade : ${dificuldades}" th:value="${dificuldade.codigo}" th:text="${dificuldade.nivel}"></option>
+					</select>
+				</div>
+				
+				<div class="col-sm-3 form-group wl-required"  workload:classforerror="creditos">
+					<label for="credito" class="control-label">Créditos</label>
+					<input type="text" id="credito" class="form-control js-plain" th:field="*{creditos}"/>
+				</div>
+				
+			</div>
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+	
+</section>
+
+</body>
+</html>

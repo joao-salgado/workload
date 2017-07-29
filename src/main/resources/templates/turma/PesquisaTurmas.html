@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}"
+		xmlns:workload="http://workload.desafio.com" 
+		xmlns:data="http://www.thymeleaf.org/extras/data" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Pesquisa de Turmas</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Pesquisa de turmas</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize="hasRole('ROLE_CADASTRAR_TURMA')">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/turmas/nova}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Nova turma</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">	
+		<form method="GET" th:object="${turmaFilter}">
+			<div class="row">
+			
+				<div class="col-sm-6 form-group">
+					<label for="sigla" class="control-label">Sigla</label>
+					<input id="sigla" type="text" class="form-control" th:field="*{sigla}" autofocus="autofocus"/>
+				</div>
+				
+				<div class="col-sm-6 form-group">
+					<label for="nome" class="control-label">Nome da disciplina</label>
+					<input id="nome" type="text" class="form-control" th:field="*{nomeDisciplina}" autofocus="autofocus"/>
+				</div>
+								
+			</div>
+	
+			<div class="row">
+			
+				<div class="col-sm-2 form-group">
+					<label for="ano" class="control-label">Ano</label>
+					<input id="ano" type="text" maxlength="4" class="form-control js-plain" th:field="*{ano}"/>
+				</div>
+				
+				<div class="col-sm-2 form-group">
+					<label for="semestre" class="control-label">Semestre</label>
+					<input id="semestre" type="text" maxlength="1" class="form-control js-plain" th:field="*{semestre}"/>
+				</div>
+			
+			</div>
+			
+			<button class="btn  btn-primary" type="submit">Pesquisar</button>
+		</form>
+		
+		<div class="table-responsive wl-tabela-simples">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="table-turma-col-sigla">Sigla</th>
+						<th class="table-turma-col-disciplina">
+							<workload:order page="${pagina}" field="d.nome" text="Disciplina"/>
+						</th>
+						<th class="table-turma-col-disciplina">Professor</th>
+						<th class="table-turma-col-alunos">Alunos</th>
+						<th class="table-turma-col-ano">
+							<workload:order page="${pagina}" field="periodo.ano" text="Ano"/>
+						</th>
+						<th class="table-turma-col-semestre">Semestre</th>
+						
+						<th class="table-col-acoes" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')"></th>
+						
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="turma : ${pagina.conteudo}">
+						<td class="text-left" th:text="${turma.sigla}">AL21H</td>
+						<td class="text-left" th:text="${turma.disciplina.nome}">Algoritmos</td>
+						<td class="text-left" th:text="${turma.professor.usuario.nome}">Qualquer professor aleatório</td>
+						<td class="text-left" th:text="${turma.quantidadeAluno}">44</td>
+						<td class="text-left" th:text="${turma.periodo.ano}">2016</td>
+						<td class="text-left" th:text="${turma.periodo.semestre}">2</td>
+						<td class="text-left" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')">
+							<a class="btn btn-link btn-xs js-tooltip" title="Editar" 
+									th:href="@{/turmas/{codigo}(codigo=${turma.codigo})}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a class="btn btn-link btn-xs js-tooltip  js-exclusao-btn" title="Excluir" 
+									href="#" 
+									data:url="@{/turmas/{codigo}(codigo=${turma.codigo})}"
+									data:objeto="${turma.sigla}">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="6">Nenhum turma encontrada</td>
+					</tr>
+				</tbody>
+				
+			</table>
+		</div>
+		<workload:pagination page="${pagina}"/>
+	</div>
+</section>
+</body>
+</html>

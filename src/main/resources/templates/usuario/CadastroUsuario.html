@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}" 
+		xmlns:workload="http://workload.desafio.com" 
+		xmlns:data="http://www.thymeleaf.org/extras/data" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+	<title>Cadastro de usuário</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${usuario.novo}">Cadastro de usuário</h1>
+					<h1 th:unless="${usuario.novo}">Edição de usuário - [[${usuario.nome}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/usuarios}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">		
+		<form method="POST" th:object="${usuario}" class="form-vertical  js-form-loading" 
+				th:action="${usuario.novo} ? @{/usuarios/novo} : @{/usuarios/{codigo}(codigo=${usuario.codigo})}">
+			<workload:message/>
+			
+			<input type="hidden" th:field="*{codigo}"/>
+			
+			<h2 class="wl-demarca">Info</h2>
+			<div class="row">
+				<div class="form-group  col-sm-10 wl-required" workload:classforerror="nome">
+					<label class="control-label" for="nome">Nome</label>
+					<input type="text" class="form-control" id="nome" th:field="*{nome}" autofocus="autofocus"/>
+				</div>
+				
+				<div class="col-sm-2 form-group">
+					<label class="control-label" for="dataNascimento">Data de nascimento</label>
+					<input type="text" id="dataNascimento" th:field="*{dataNascimento}" class="form-control  js-date" autocomplete="off"/>
+				</div>
+				
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-3" workload:classforerror="senha" th:classappend="${usuario.novo} ? wl-required">
+					<label class="control-label" for="senha">Senha</label> 
+					<input type="password" class="form-control" id="senha" th:field="*{senha}"/>
+				</div>
+				
+				<div class="form-group  col-sm-3" workload:classforerror="confirmacaoSenha">
+					<label class="control-label" for="confirmacaoSenha">Confirmação de senha</label> 
+					<input type="password" class="form-control" id="confirmacaoSenha" th:field="*{confirmacaoSenha}"/>
+				</div>
+				
+				<div class="form-group  col-sm-3 wl-required" th:if="${#authentication.principal.usuario.codigo != usuario.codigo}">
+					<label class="control-label">Status</label>
+					<div>
+						<input type="checkbox" class="js-status" data-size="small" data-on-color="success" 
+									data-off-color="danger" data-on-text="Ativo" data-off-text="Inativo" 
+										th:field="*{ativo}"/>
+					</div>
+				</div>
+			</div>	
+			
+			<div class="row">
+				<div class="form-group  col-sm-6 wl-required" workload:classforerror="grupos">
+					<label class="control-label">Grupos</label> 
+					<div>
+						<th:block th:each="grupo : ${grupos}" th:if="${grupo.codigo} > 2">
+	  						<div class="checkbox  checkbox-inline"> 
+		    					<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}"/>
+		    					<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}">Técnico-Administrativo</label>
+	    					</div>
+    					</th:block>
+					</div>
+				</div>
+			</div>
+				
+			<h2 class="wl-demarca">Contato</h2>
+			<div class="row">
+				<div class="form-group  col-sm-5 wl-required" workload:classforerror="email">
+					<label class="control-label" for="email">E-mail</label>
+					<input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Será utilizado para login"/>
+				</div>
+				<div class="form-group  col-sm-3">
+					<label class="control-label" for="telefone">Telefone</label>
+					<input type="text" class="form-control js-phone-number" id="telefone" th:field="*{contato.telefone}"/>
+				</div>
+				<div class="form-group  col-sm-2">
+					<label class="control-label" for="setor">Setor</label>
+					<input type="text" class="form-control" id="setor" th:field="*{contato.setor}"/>
+				</div>
+				<div class="form-group  col-sm-2">
+					<label class="control-label" for="ramal">Ramal</label>
+					<input type="text" class="form-control js-plain" id="ramal" th:field="*{contato.ramal}"/>
+				</div>
+			</div>
+			
+			<button type="submit" class="btn  btn-primary">Salvar</button>
+		</form>
+	</div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	
+	<script>
+		$('.js-status').bootstrapSwitch();	
+	</script>
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:workload="http://workload.desafio.com" 
+	xmlns:data="http://www.thymeleaf.org/extras/data" 
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+
+<body>
+<aside class="aw-layout-sidebar  js-sidebar" th:fragment="layout-sidebar">
+	<div class="aw-layout-sidebar__content">
+
+   		<nav class="aw-menu  js-menu">
+     		<ul class="aw-menu__list">
+
+       			<li class="aw-menu__item" workload:menu="@{/}">
+         			<a th:href="@{/}"><i class="fa  fa-fw  fa-home"></i><span>Dashboard</span></a>
+       			</li>
+
+      			 <li class="aw-menu__item">
+         			<a href="#">
+           				<i class="fa  fa-fw  fa-database"></i><span>Universidade</span>
+           				<i class="aw-menu__navigation-icon  fa"></i>
+        			</a>
+     
+	          		<ul class="aw-menu__list  aw-menu__list--sublist">
+	          		
+	           		 	<li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/departamentos}">
+	           		 		<a th:href="@{/departamentos}">Departamento</a>
+	           		 	</li>
+	            		<li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/cursos}">
+	            			<a th:href="@{/cursos}">Curso</a>
+	            		</li>
+	            		<li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/tipos}">
+	            			<a th:href="@{/tipos}">Tipo do curso</a>
+	            		</li>
+	            		<li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/disciplinas}">
+	            			<a th:href="@{/disciplinas}">Disciplina</a>
+	            		</li>
+	            		<li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/turmas}">
+	            			<a th:href="@{/turmas}">Turma</a>
+	            		</li>
+	            		<li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/alunos}">
+	            			<a th:href="@{/alunos}">Aluno</a>
+	            		</li>
+	            		
+	          		</ul>
+	        	</li>
+
+       			<li class="aw-menu__item" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')">
+         			<a href="#">
+           				<i class="fa  fa-fw  fa-user"></i><span>Usuários</span>
+           				<i class="aw-menu__navigation-icon  fa"></i>
+         			</a>
+
+       				<ul class="aw-menu__list  aw-menu__list--sublist">
+       				
+			           <li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/professores}">
+	            			<a th:href="@{/professores}">Professor</a>
+	            		</li>
+	            		
+	            		<li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/usuarios}">
+	            			<a th:href="@{/usuarios}">Técnico/Estagiário</a>
+	            		</li>
+			            
+       				</ul>
+       			</li>
+       			
+       			<li class="aw-menu__item" sec:authorize="hasRole('ROLE_DOCENTE')">
+         			<a href="#">
+           				<i class="fa  fa-fw  fa-hashtag"></i><span>Atividade docente</span>
+           				<i class="aw-menu__navigation-icon  fa"></i>
+         			</a>
+
+       				<ul class="aw-menu__list  aw-menu__list--sublist">
+			            
+			            <li class="aw-menu__item  aw-menu__item--link"  workload:menu="@{/atividades}">
+			           		<a th:href="@{/atividades}">Atividades</a>
+			            </li>
+				            
+       				</ul>
+       			</li>
+       			
+       			<li class="aw-menu__item" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')">
+         			<a href="#">
+           				<i class="fa  fa-fw  fa-file-pdf-o"></i><span>Relatórios</span>
+           				<i class="aw-menu__navigation-icon  fa"></i>
+         			</a>
+
+       				<ul class="aw-menu__list  aw-menu__list--sublist">
+       				
+			            <li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/relatorios/atividadesProfessor}">
+			           		<a th:href="@{/relatorios/atividadesProfessor}">Atividades do professor</a>
+			            </li>
+			            
+			            <li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/relatorios/turmasProfessor}">
+			           		<a th:href="@{/relatorios/turmasProfessor}">Turmas do professor</a>
+			            </li>
+			            
+			            <li class="aw-menu__item  aw-menu__item--link" workload:menu="@{/relatorios/ranking}">
+			           		<a th:href="@{/relatorios/ranking}">Carga Horária</a>
+			            </li>
+			            
+       				</ul>
+       			</li>
+       			
+     		</ul>
+   		</nav>
+	</div>
+</aside>	
+</body>
+</html>

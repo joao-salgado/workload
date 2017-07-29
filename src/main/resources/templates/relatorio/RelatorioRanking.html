@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}">
+
+<head>
+	<title>Relatório - Carga de trabalho</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>
+				Relatório da carga de Trabalho
+			</h1>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${ranking}" th:action="@{/relatorios/ranking}" target="_blank">
+			<th:block th:include="fragments/MensagensErroValidacao"></th:block>
+	
+			<div class="row">			
+			
+				<div class="col-sm-4  form-group wl-required">
+					<label class="control-label" for="departamento">Departamento</label>
+					<select id="departamento" class="form-control" th:field="*{departamento}">
+						<option value="">Todos os departamentos</option>
+						<option th:each="departamento : ${departamentos}" th:if="${departamento.codigo} != 1" th:value="${departamento.codigo}" th:text="${departamento.nome}"></option>
+					</select>
+				</div>		
+				
+				<div class="form-group  col-sm-8  wl-required">
+					<label for="dataInicio">Período<span style="color: red;"> *</span></label>
+					<div class="form-inline">
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" 
+							id="dataInicio" th:field="*{dataInicio}" autocomplete="off"/>
+						<label for="a" class="aw-form-label-between">a</label>
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" 
+							id="dataFim" th:field="*{dataFim}" autocomplete="off"/>
+					</div>
+				</div>
+			</div>
+				
+			<button type="submit" class="btn  btn-primary">Gerar</button>
+		</form>
+	</div>	
+</section>
+
+</html>

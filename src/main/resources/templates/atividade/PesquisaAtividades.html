@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{layout/LayoutPadrao}"
+		xmlns:workload="http://workload.desafio.com" 
+		xmlns:data="http://www.thymeleaf.org/extras/data" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Atividades</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Adição e pesquisa de atividades</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/atividades/nova}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Nova atividade</span>
+						</a>
+					</div>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize="not hasRole('ROLE_CADASTRAR_USUARIO')">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/atividades/criar}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs hidden-sm">Não encontrou? Cadastre aqui!</span>
+						</a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">	
+		<form method="GET" th:object="${atividadeFilter}">
+			<workload:message/>	
+			<div class="row">
+				
+				<div class="col-sm-5  form-group">
+					<label for="area" class="control-label">Área</label>
+					<select id="area" class="form-control" th:field="*{area}">
+						<option value="">Todas as áreas</option>
+						<option th:each="area : ${areas}" th:value="${area.codigo}" th:text="${area.descricao}"></option>
+					</select>
+				</div>
+				
+				<div class="col-sm-5  form-group">
+					<label for="restricao" class="control-label">Restrição</label>
+					<select id="restricao" class="form-control" th:field="*{restricao}">
+						<option value="">Todas as áreas</option>
+						<option th:each="restricao : ${restricoes}" th:value="${restricao.codigo}" th:text="${restricao.descricao}"></option>
+					</select>
+				</div>
+				
+				<div class="col-sm-2  form-group">
+					<label for="pontuacao" class="control-label">Pontuação</label>
+					<input id="pontuacao" type="number" class="form-control" th:field="*{pontuacao}"/>
+				</div>
+				
+			</div>
+			
+			<div class="row">
+					<div class="form-group  col-sm-12">
+						<label for="descricao" class="control-label">Descrição</label>
+						<textarea class="form-control" id="descricao" rows="5" 
+								placeholder="Descreva algo sobre a atividade" th:field="*{descricao}"></textarea>
+					</div>
+			</div>
+			
+			<button class="btn  btn-primary" type="submit">Pesquisar</button>
+			
+		</form>
+		
+		
+		<div class="table-responsive wl-tabela-simples">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="table-atividades-col-area">Área da atividade</th>
+						<th class="table-atividades-col-restricao">Restrição</th>
+						<th class="table-atividades-col-descricao">Atividade</th>
+						<th class="table-atividades-col-pontuacao">
+							<workload:order page="${pagina}" field="pontuacao" text="Pontuação"/>	
+						</th>
+						
+						<th class="table-col-acoes"></th>
+						
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="atividade : ${pagina.conteudo}">
+						<td class="text-left" th:text="${atividade.area.descricao}"></td>
+						<td th:text="${atividade.restricao.descricao}"></td>
+						<td th:text="${atividade.descricao}"></td>
+						<td class="text-center" th:text="${atividade.pontuacao}"></td>
+						<td class="text-center">
+						
+							<a class="btn btn-link btn-xs js-tooltip" title="Adicionar"
+									th:href="@{atividades/adicionar/{codigo}(codigo=${atividade.codigo})}">
+								<i class="glyphicon glyphicon-plus"></i>
+							</a>
+							<a sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')" class="btn btn-link btn-xs js-tooltip" title="Editar" 
+									th:href="@{/atividades/{codigo}(codigo=${atividade.codigo})}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')" class="btn btn-link btn-xs js-tooltip  js-exclusao-btn" title="Excluir"
+								href="#" data:url="@{/atividades/{codigo}(codigo=${atividade.codigo})}"
+									data:objeto="${atividade.descricao}">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="5">Nenhuma atividade encontrada</td>
+					</tr>
+				</tbody>
+				
+			</table>
+		</div>
+		
+		
+		<workload:pagination page="${pagina}"/>
+		
+	</div>
+</section>
+</body>
+</html>
