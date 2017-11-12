@@ -21,3 +21,5 @@ almost everywhere.
 
 This product is the result of a competition at the Technological University of Paraná (UTFPR), which was the winner. Many cutting-edge
 technologies have been used in the design.
+
+See the wiki!
